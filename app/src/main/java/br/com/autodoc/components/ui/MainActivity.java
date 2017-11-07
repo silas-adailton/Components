@@ -1,18 +1,23 @@
-package br.com.autodoc.components;
+package br.com.autodoc.components.ui;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
+import br.com.autodoc.components.R;
+import br.com.autodoc.components.viewModel.UserViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dagger.android.support.DaggerAppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends DaggerAppCompatActivity {
+
+    @Inject
+    UserViewModel userViewModel;
 
 
     @BindView(R.id.editText_name)EditText editName;
@@ -22,16 +27,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        editName.setText("ajdjkahdjkahdjkas");
-
-
 
     }
 
     @OnClick(R.id.button_save) void save() {
-        String user = editName.getText().toString().trim();
+        String userName = editName.getText().toString().trim();
 
-        Toast.makeText(this, user, Toast.LENGTH_SHORT).show();
+        userViewModel.saveUser(userName);
+
+        Toast.makeText(this, userName, Toast.LENGTH_SHORT).show();
 
     }
 
