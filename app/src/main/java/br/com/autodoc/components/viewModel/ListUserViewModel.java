@@ -12,18 +12,22 @@ import br.com.autodoc.components.model.User;
 
 public class ListUserViewModel extends ViewModel{
 
-    private Repositiry repositiry;
     private LiveData<List<User>> listUser;
+    private Repositiry repositiry;
 
     @Inject
-    public ListUserViewModel(LiveData<List<User>> listUser, Repositiry repositiry) {
-        this.listUser = listUser;
+    public ListUserViewModel(Repositiry repositiry) {
         this.repositiry = repositiry;
     }
 
-    public LiveData<List<User>> listUser() {
-
-      return listUser = (LiveData<List<User>>) repositiry.getAll();
+    public LiveData<List<User>> listUsers() {
+       new Thread(new Runnable() {
+           @Override
+           public void run() {
+               listUser = repositiry.getAll();
+           }
+       }).start();
+      return listUser;
     }
 
 }

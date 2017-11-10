@@ -14,8 +14,8 @@ import dagger.Provides;
 public class ListUserViewModelModule {
 
     @Provides
-    ListUserViewModel proListUserViewModel(LiveData<List<User>> listUserLiveData, Repositiry repositiry) {
+    ListUserViewModel proListUserViewModel(Repositiry repositiry) {
 
-        return new ListUserViewModel(listUserLiveData, repositiry);
+        return new ListUserViewModel(repositiry);
     }
 }
