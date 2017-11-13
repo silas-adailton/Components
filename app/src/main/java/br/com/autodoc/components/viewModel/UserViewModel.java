@@ -1,23 +1,19 @@
 package br.com.autodoc.components.viewModel;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
-
-import java.util.List;
-import java.util.logging.Handler;
 
 import javax.inject.Inject;
 
-import br.com.autodoc.components.data.Repositiry;
+import br.com.autodoc.components.data.Repository;
 import br.com.autodoc.components.model.User;
 
 
 public class UserViewModel extends ViewModel {
-    private Repositiry repositiry;
+    private Repository repository;
 
     @Inject
-    public UserViewModel( Repositiry repositiry) {
-        this.repositiry = repositiry;
+    public UserViewModel( Repository repository) {
+        this.repository = repository;
     }
 
     public void saveUser(String userName) {
@@ -27,7 +23,7 @@ public class UserViewModel extends ViewModel {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                repositiry.insertAll(user);
+                repository.insertAll(user);
             }
         }).start();
 

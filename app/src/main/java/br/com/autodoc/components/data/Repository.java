@@ -9,12 +9,12 @@ import javax.inject.Inject;
 
 import br.com.autodoc.components.model.User;
 
-public class Repositiry implements UserDAO {
+public class Repository implements UserDAO {
 
     private AppDatabase appDatabase;
 
     @Inject
-    public Repositiry(AppDatabase appDatabase) {
+    public Repository(AppDatabase appDatabase) {
         this.appDatabase = appDatabase;
     }
 

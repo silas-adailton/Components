@@ -1,7 +1,11 @@
 package br.com.autodoc.components.di.module;
 
 
-import br.com.autodoc.components.data.Repositiry;
+import android.arch.lifecycle.ViewModelProvider;
+
+import br.com.autodoc.components.ViewModelFactory;
+import br.com.autodoc.components.data.Repository;
+import br.com.autodoc.components.viewModel.ListUserViewModel;
 import br.com.autodoc.components.viewModel.UserViewModel;
 import dagger.Module;
 import dagger.Provides;
@@ -10,7 +14,8 @@ import dagger.Provides;
 public class UserViewModelModule {
 
     @Provides
-    UserViewModel providUserViewModel(Repositiry repositiry) {
-        return new UserViewModel(repositiry);
+    UserViewModel providUserViewModel(Repository repository) {
+        return new UserViewModel(repository);
     }
+
 }
