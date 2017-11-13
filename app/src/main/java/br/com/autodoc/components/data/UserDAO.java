@@ -1,6 +1,5 @@
 package br.com.autodoc.components.data;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -14,7 +13,7 @@ import br.com.autodoc.components.model.User;
 public interface UserDAO {
 
     @Query("SELECT * FROM User")
-    LiveData<List<User>> getAll();
+    List<User> getAll();
 
     @Insert
     void insertAll(User... users);

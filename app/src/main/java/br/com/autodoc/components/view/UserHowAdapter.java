@@ -1,7 +1,6 @@
-package br.com.autodoc.components.ui;
+package br.com.autodoc.components.view;
 
 
-import android.arch.lifecycle.LiveData;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +15,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class UserHowAdapter extends RecyclerView.Adapter<UserHowAdapter.ViewHolder>{
-    LiveData<List<User>> list;
+    private List<User> list;
 
-    public UserHowAdapter(LiveData<List<User>> list) {
+    public UserHowAdapter(List<User> list) {
         this.list = list;
     }
 
@@ -31,7 +30,7 @@ public class UserHowAdapter extends RecyclerView.Adapter<UserHowAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        User user = list.getValue().get(position);
+        User user = list.get(position);
 
         holder.textViewUser.setText(user.getName());
 
@@ -39,7 +38,7 @@ public class UserHowAdapter extends RecyclerView.Adapter<UserHowAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return list.getValue().size();
+        return list.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

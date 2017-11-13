@@ -1,7 +1,6 @@
-package br.com.autodoc.components.ui;
+package br.com.autodoc.components.view;
 
 import android.arch.lifecycle.LiveData;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -40,10 +39,10 @@ public class ListUserActivity extends DaggerAppCompatActivity {
 
     public void showUsers() {
 
-        LiveData<List<User>> listUser = listUserViewModel.listUser();
+//        List<User> listUser = listUserViewModel.listUser();
 
-        userHowAdapter = new UserHowAdapter(listUser);
-        recyclerView.setAdapter(userHowAdapter);
+//        userHowAdapter = new UserHowAdapter(listUser);
+//        recyclerView.setAdapter(userHowAdapter);
 
     }
 

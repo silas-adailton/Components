@@ -1,7 +1,7 @@
 package br.com.autodoc.components.di.module;
 
-import br.com.autodoc.components.ui.ListUserActivity;
-import br.com.autodoc.components.ui.MainActivity;
+import br.com.autodoc.components.view.ListUserActivity;
+import br.com.autodoc.components.view.MainActivity;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 

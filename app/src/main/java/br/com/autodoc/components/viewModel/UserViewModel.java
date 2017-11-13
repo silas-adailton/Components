@@ -1,10 +1,8 @@
 package br.com.autodoc.components.viewModel;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
 import java.util.List;
-import java.util.logging.Handler;
 
 import javax.inject.Inject;
 
@@ -13,7 +11,8 @@ import br.com.autodoc.components.model.User;
 
 
 public class UserViewModel extends ViewModel {
-    private Repositiry repositiry;
+    Repositiry repositiry;
+    private List<User> listUsers;
 
     @Inject
     public UserViewModel( Repositiry repositiry) {
@@ -31,6 +30,18 @@ public class UserViewModel extends ViewModel {
             }
         }).start();
 
+    }
+
+    public List<User> getUsers() {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                listUsers = repositiry.getAll();
+            }
+        }).start();
+
+        return listUsers;
     }
 
 }

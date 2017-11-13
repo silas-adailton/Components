@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.com.autodoc.components.ui.ListUserActivity">
+    tools:context="br.com.autodoc.components.view.ListUserActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_user"
+        android:id="@+id/recycler_userrr"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"

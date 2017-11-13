@@ -1,6 +1,7 @@
 package br.com.autodoc.components.viewModel;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import java.util.List;
@@ -9,21 +10,41 @@ import javax.inject.Inject;
 
 import br.com.autodoc.components.data.Repositiry;
 import br.com.autodoc.components.model.User;
+import dagger.android.support.DaggerAppCompatActivity;
 
-public class ListUserViewModel extends ViewModel{
+public class ListUserViewModel extends DaggerAppCompatActivity{
 
-    private Repositiry repositiry;
-    private LiveData<List<User>> listUser;
+    Repositiry repositiry;
+    List<User> listUser;// = new ArrayList<>();
+//    private final LiveData<List<User>>listUserLive;
 
     @Inject
-    public ListUserViewModel(LiveData<List<User>> listUser, Repositiry repositiry) {
-        this.listUser = listUser;
+    public ListUserViewModel(Repositiry repositiry) {
         this.repositiry = repositiry;
+//        listUserLive = repositiry.getAllLive();
     }
 
-    public LiveData<List<User>> listUser() {
+    public List<User> getUsers() {
 
-      return listUser = (LiveData<List<User>>) repositiry.getAll();
+      new Thread(new Runnable() {
+          @Override
+          public void run() {
+              listUser = repositiry.getAll();
+          }
+      }).start();
+
+      return listUser;
+
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                return listUserLive;
+//            }
+//        }).start();
+
+//        return listUserLive;
+
     }
 
 }

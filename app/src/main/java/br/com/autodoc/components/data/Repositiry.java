@@ -19,7 +19,7 @@ public class Repositiry implements UserDAO {
     }
 
     @Override
-    public LiveData<List<User>> getAll() {
+    public List<User> getAll() {
         return appDatabase.userDAO().getAll();
     }
 
