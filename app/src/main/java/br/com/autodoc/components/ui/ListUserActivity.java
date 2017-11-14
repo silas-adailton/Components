@@ -1,6 +1,8 @@
 package br.com.autodoc.components.ui;
 
 import android.arch.lifecycle.LifecycleActivity;
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
@@ -32,7 +34,8 @@ import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 import dagger.android.support.DaggerAppCompatActivity;
 
-public class ListUserActivity extends LifecycleActivity {
+public class ListUserActivity extends DaggerAppCompatActivity implements LifecycleOwner {
+    private LifecycleRegistry lifecycleRegistry;
 
     ListUserViewModel listUserViewModel;
 

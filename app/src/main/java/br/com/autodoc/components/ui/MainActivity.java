@@ -1,7 +1,9 @@
 package br.com.autodoc.components.ui;
 
-import android.arch.lifecycle.LifecycleActivity;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,29 +27,60 @@ import br.com.autodoc.components.viewModel.UserViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import dagger.android.AndroidInjection;
+import dagger.android.support.DaggerAppCompatActivity;
 
-public class MainActivity extends LifecycleActivity {
+public class MainActivity extends DaggerAppCompatActivity implements LifecycleObserver {
 
     @BindView(R.id.editText_name)EditText editName;
+    @BindView(R.id.recycler_user) RecyclerView recyclerViewUser;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     @Inject
     ViewModelProvider.Factory factory;
-
-    @BindView(R.id.recycler_user)
-
-    RecyclerView recyclerViewUser;
     private UserViewModel userViewModel;
     private UserHowAdapter userHowAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
+        getLifecycle().addObserver(MainActivity.this);
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        getLifecycle().removeObserver(MainActivity.this);
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    private void initializeView() {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        initRecyclerView();
-        showListUser();
+    }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    public void initRecyclerView() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
+        recyclerViewUser.setLayoutManager(layoutManager);
+        recyclerViewUser.setHasFixedSize(true);
+        recyclerViewUser.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewUser.addItemDecoration(dividerItemDecoration);
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    public void showListUser() {
+        userViewModel = ViewModelProviders.of(this, factory).get(UserViewModel.class);
+
+        userViewModel.getListUser().observe(this, new Observer<List<User>>() {
+            @Override
+            public void onChanged(@Nullable List<User> users) {
+                userHowAdapter = new UserHowAdapter(users);
+                recyclerViewUser.setAdapter(userHowAdapter);
+            }
+        });
     }
 
     @OnClick(R.id.button_save) void save() {
@@ -61,26 +95,5 @@ public class MainActivity extends LifecycleActivity {
     @OnClick(R.id.button_listar) void listar() {
         Intent intent = new Intent(this, ListUserActivity.class);
         startActivity(intent);
-    }
-
-    public void initRecyclerView() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
-        recyclerViewUser.setLayoutManager(layoutManager);
-        recyclerViewUser.setHasFixedSize(true);
-        recyclerViewUser.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewUser.addItemDecoration(dividerItemDecoration);
-    }
-
-    public void showListUser() {
-        userViewModel = ViewModelProviders.of(this, factory).get(UserViewModel.class);
-
-        userViewModel.getListUser().observe(this, new Observer<List<User>>() {
-            @Override
-            public void onChanged(@Nullable List<User> users) {
-                userHowAdapter = new UserHowAdapter(users);
-                recyclerViewUser.setAdapter(userHowAdapter);
-            }
-        });
     }
 }
