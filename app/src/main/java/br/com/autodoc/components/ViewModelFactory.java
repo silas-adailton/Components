@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import br.com.autodoc.components.data.Repository;
 import br.com.autodoc.components.viewModel.ListUserViewModel;
+import br.com.autodoc.components.viewModel.UserViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
@@ -25,6 +26,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(ListUserViewModel.class)) {
 
             return (T) new ListUserViewModel(repository);
+        }
+        else if (modelClass.isAssignableFrom(UserViewModel.class)) {
+            return (T) new UserViewModel(repository);
         }
         throw new IllegalArgumentException("Unknown class name ");
     }
