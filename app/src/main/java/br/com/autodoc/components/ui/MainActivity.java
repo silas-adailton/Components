@@ -2,13 +2,11 @@ package br.com.autodoc.components.ui;
 
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.android.support.DaggerAppCompatActivity;
+import io.reactivex.subscribers.DisposableSubscriber;
 
 public class MainActivity extends DaggerAppCompatActivity implements LifecycleObserver {
 
@@ -74,26 +73,51 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
     public void showListUser() {
         userViewModel = ViewModelProviders.of(this, factory).get(UserViewModel.class);
 
-        userViewModel.getListUser().observe(this, new Observer<List<User>>() {
+//        userViewModel.getListUser().observe(this, new Observer<List<User>>() {
+//            @Override
+//            public void onChanged(@Nullable List<User> users) {
+//                userHowAdapter = new UserHowAdapter(users);
+//                recyclerViewUser.setAdapter(userHowAdapter);
+//            }
+//        });
+        userViewModel.getUser().subscribeWith(new DisposableSubscriber<List<User>>() {
             @Override
-            public void onChanged(@Nullable List<User> users) {
+            public void onNext(List<User> users) {
                 userHowAdapter = new UserHowAdapter(users);
                 recyclerViewUser.setAdapter(userHowAdapter);
             }
+
+            @Override
+            public void onError(Throwable t) {
+                Toast.makeText(MainActivity.this, "Erro "+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onComplete() {
+                Toast.makeText(MainActivity.this, "Completou", Toast.LENGTH_SHORT).show();
+            }
         });
+
     }
 
     @OnClick(R.id.button_save) void save() {
         String userName = editName.getText().toString().trim();
 
-        userViewModel.saveUser(userName);
+//        userViewModel.saveUser(userName);
+//        userViewModel = ViewModelProviders.of(this, factory).get(UserViewModel.class);
 
+        userViewModel.saveUserRx(userName).doOnTerminate(this::clearEditText)
+                .subscribe();
         Toast.makeText(this, userName, Toast.LENGTH_SHORT).show();
+    }
 
+    private void clearEditText() {
+        editName.setText("");
     }
 
     @OnClick(R.id.button_listar) void listar() {
-        Intent intent = new Intent(this, ListUserActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, ListUserActivity.class);
+//        startActivity(intent);
+        userViewModel.deleteUser(1).subscribe();
     }
 }

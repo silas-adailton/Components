@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import br.com.autodoc.components.R;
@@ -31,9 +33,8 @@ public class UserHowAdapter extends RecyclerView.Adapter<UserHowAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         User user = list.get(position);
-
         holder.textViewUser.setText(user.getName());
-
+        holder.textViewUser.setTag(user.getId());
     }
 
     @Override
@@ -48,6 +49,15 @@ public class UserHowAdapter extends RecyclerView.Adapter<UserHowAdapter.ViewHold
             super(itemView);
 
             ButterKnife.bind(this, itemView);
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    Toast.makeText(itemView.getContext(), "Item "+textViewUser.getTag(), Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            });
         }
     }
 }
