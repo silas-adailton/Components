@@ -17,6 +17,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class UserViewModel extends ViewModel {
     private Repository repository;
+    private User user = new User();
 
     public UserViewModel(Repository repository) {
         this.repository = repository;
@@ -24,7 +25,7 @@ public class UserViewModel extends ViewModel {
 
     public void saveUser(String userName) {
 
-        final User user = new User();
+//        final User user = new User();
         user.setName(userName);
         new Thread(new Runnable() {
             @Override
@@ -40,7 +41,7 @@ public class UserViewModel extends ViewModel {
         return new CompletableFromAction(new Action() {
             @Override
             public void run() throws Exception {
-                final User user = new User();
+//                final User user = new User();
                 user.setName(name);
 
                 repository.insertAll(user);
@@ -64,7 +65,7 @@ public class UserViewModel extends ViewModel {
     public Completable deleteUser(int id) {
 
         return new CompletableFromAction(() -> {
-            final User user = new User();
+//            final User user = new User();
             user.setId(id);
             repository.delete(user);
         }).subscribeOn(Schedulers.io())

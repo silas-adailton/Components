@@ -5,13 +5,18 @@ import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -28,12 +33,16 @@ import butterknife.OnClick;
 import dagger.android.support.DaggerAppCompatActivity;
 import io.reactivex.subscribers.DisposableSubscriber;
 
-public class MainActivity extends DaggerAppCompatActivity implements LifecycleObserver {
+public class MainActivity extends DaggerAppCompatActivity implements LifecycleObserver, UserHowAdapter.UserOnclickListener {
 
-    @BindView(R.id.editText_name)EditText editName;
-    @BindView(R.id.recycler_user) RecyclerView recyclerViewUser;
-    @BindView(R.id.toolbar)
+    @BindView(R.id.editText_name)
+    EditText editName;
+    @BindView(R.id.recycler_user)
+    RecyclerView recyclerViewUser;
+    @BindView(R.id.main_toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.button_save)Button btnSalvar;
 
     @Inject
     ViewModelProvider.Factory factory;
@@ -60,6 +69,12 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    private void initializeToolbar() {
+        getSupportActionBar();
+        toolbar.setTitle("Teste");
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     public void initRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
@@ -71,6 +86,9 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     public void showListUser() {
+
+        registerForContextMenu(recyclerViewUser);
+
         userViewModel = ViewModelProviders.of(this, factory).get(UserViewModel.class);
 
 //        userViewModel.getListUser().observe(this, new Observer<List<User>>() {
@@ -85,11 +103,12 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
             public void onNext(List<User> users) {
                 userHowAdapter = new UserHowAdapter(users);
                 recyclerViewUser.setAdapter(userHowAdapter);
+                userHowAdapter.setUserOnclickListener(MainActivity.this);
             }
 
             @Override
             public void onError(Throwable t) {
-                Toast.makeText(MainActivity.this, "Erro "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Erro " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -100,7 +119,8 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
 
     }
 
-    @OnClick(R.id.button_save) void save() {
+    @OnClick(R.id.button_save)
+    void save() {
         String userName = editName.getText().toString().trim();
 
 //        userViewModel.saveUser(userName);
@@ -115,9 +135,43 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
         editName.setText("");
     }
 
-    @OnClick(R.id.button_listar) void listar() {
-//        Intent intent = new Intent(this, ListUserActivity.class);
-//        startActivity(intent);
-        userViewModel.deleteUser(1).subscribe();
+    @Override
+    public void onClickUserListener(int id) {
+//        CheckBox checkBoxDeleteUser = findViewById(R.id.checkbox_delete_user);
+//        checkBoxDeleteUser.setVisibility(View.VISIBLE);
+//        delete(id);
+
+        ActionMode.Callback callback = new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+                MenuInflater inflater = actionMode.getMenuInflater();
+                inflater.inflate(R.menu.item_menu, menu);
+                return false;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+                delete(id);
+                Toast.makeText(MainActivity.this, "ItemClicked", Toast.LENGTH_SHORT).show();
+                actionMode.finish();
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode actionMode) {
+
+            }
+        };
+        recyclerViewUser.startActionMode(callback);
     }
+
+    public void delete(int id) {
+        userViewModel.deleteUser(id).subscribe();
+    }
+
 }

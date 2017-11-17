@@ -1,6 +1,5 @@
 package br.com.autodoc.components.ui;
 
-import android.arch.lifecycle.LifecycleActivity;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.LiveData;
@@ -10,14 +9,10 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +20,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import br.com.autodoc.components.R;
-import br.com.autodoc.components.ViewModelFactory;
 import br.com.autodoc.components.data.Repository;
 import br.com.autodoc.components.model.User;
 import br.com.autodoc.components.viewModel.ListUserViewModel;
