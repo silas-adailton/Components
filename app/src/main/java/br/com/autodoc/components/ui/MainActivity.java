@@ -6,20 +6,23 @@ import android.arch.lifecycle.OnLifecycleEvent;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -49,6 +52,9 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
     private UserViewModel userViewModel;
     private UserHowAdapter userHowAdapter;
 
+    @Inject
+    User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +72,28 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
     private void initializeView() {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    public void showButtonSave() {
+        editName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                btnSalvar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() != 0) {
+                    btnSalvar.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
@@ -136,17 +164,21 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
     }
 
     @Override
-    public void onClickUserListener(int id) {
-//        CheckBox checkBoxDeleteUser = findViewById(R.id.checkbox_delete_user);
-//        checkBoxDeleteUser.setVisibility(View.VISIBLE);
+    public void onClickUserListener(View view, List<User> list, int id) {
 //        delete(id);
+
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).isSelected()) {
+                Toast.makeText(this, ""+list.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }
 
         ActionMode.Callback callback = new ActionMode.Callback() {
             @Override
             public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
                 MenuInflater inflater = actionMode.getMenuInflater();
                 inflater.inflate(R.menu.item_menu, menu);
-                return false;
+                return true;
             }
 
             @Override
@@ -159,7 +191,7 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
                 delete(id);
                 Toast.makeText(MainActivity.this, "ItemClicked", Toast.LENGTH_SHORT).show();
                 actionMode.finish();
-                return false;
+                return true;
             }
 
             @Override
@@ -168,10 +200,18 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
             }
         };
         recyclerViewUser.startActionMode(callback);
+
+
     }
 
-    public void delete(int id) {
+    @Override
+    public void onClickUser(View view, List<User> list, int id) {
+//        findViewById(R.id.textView).setBackgroundColor(getResources().getColor(R.color.text));
+    }
+
+    private void delete(int id) {
         userViewModel.deleteUser(id).subscribe();
+
     }
 
 }
