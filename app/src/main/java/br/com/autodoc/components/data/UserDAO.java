@@ -9,7 +9,6 @@ import android.arch.persistence.room.Query;
 import java.util.List;
 
 import br.com.autodoc.components.model.User;
-import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
 @Dao
@@ -22,7 +21,7 @@ public interface UserDAO {
     Flowable<List<User>> getUser();
 
     @Insert
-    void insertAll(User... users);
+    void insertAll(User... userEntities);
 
     @Delete
     void delete(User user);

@@ -11,8 +11,8 @@ import dagger.Provides;
 public class ViewModelFactoryModule {
 
     @Provides
-    ViewModelProvider.Factory providerFactory(Repository repository) {
+    ViewModelProvider.Factory providerFactory(Repository repositoryImpl) {
 
-        return new ViewModelFactory(repository);
+        return new ViewModelFactory(repositoryImpl);
     }
 }

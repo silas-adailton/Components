@@ -8,7 +8,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import br.com.autodoc.components.model.User;
-import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
 public class Repository implements UserDAO {
@@ -31,8 +30,8 @@ public class Repository implements UserDAO {
     }
 
     @Override
-    public void insertAll(User... users) {
-        appDatabase.userDAO().insertAll(users);
+    public void insertAll(User... userEntities) {
+        appDatabase.userDAO().insertAll(userEntities);
     }
 
     @Override

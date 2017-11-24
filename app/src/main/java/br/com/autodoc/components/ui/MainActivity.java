@@ -22,21 +22,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import br.com.autodoc.components.R;
 import br.com.autodoc.components.model.User;
+import br.com.autodoc.components.model.UserFirebase;
 import br.com.autodoc.components.viewModel.UserViewModel;
+import br.com.autodoc.components.viewModel.ViewModelFirebase;
+import br.com.autodoc.components.viewModel.ViewModelFirebaseContract;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.android.support.DaggerAppCompatActivity;
 import io.reactivex.subscribers.DisposableSubscriber;
 
-public class MainActivity extends DaggerAppCompatActivity implements LifecycleObserver, UserHowAdapter.UserOnclickListener {
+public class MainActivity extends DaggerAppCompatActivity implements LifecycleObserver, UserHowAdapter.UserOnclickListener, ViewModelFirebaseContract.View {
 
     @BindView(R.id.editText_name)
     EditText editName;
@@ -55,10 +57,15 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
     @Inject
     User user;
 
+    @Inject
+    ViewModelFirebase viewModelFirebase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLifecycle().addObserver(MainActivity.this);
+
+        viewModelFirebase.showListMessage();
 
     }
 
@@ -127,9 +134,9 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
 //            }
 //        });
         userViewModel.getUser().subscribeWith(new DisposableSubscriber<List<User>>() {
-            @Override
-            public void onNext(List<User> users) {
-                userHowAdapter = new UserHowAdapter(users);
+                    @Override
+            public void onNext(List<User> userEntities) {
+                userHowAdapter = new UserHowAdapter(userEntities);
                 recyclerViewUser.setAdapter(userHowAdapter);
                 userHowAdapter.setUserOnclickListener(MainActivity.this);
             }
@@ -169,7 +176,6 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
 
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).isSelected()) {
-                Toast.makeText(this, ""+list.toString(), Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -189,7 +195,6 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
             @Override
             public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
                 delete(id);
-                Toast.makeText(MainActivity.this, "ItemClicked", Toast.LENGTH_SHORT).show();
                 actionMode.finish();
                 return true;
             }
@@ -214,4 +219,20 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
 
     }
 
+    @Override
+    public void showUserFirebase(List<UserFirebase> list) {
+
+        UserFirebase userFirebase = new UserFirebase();
+
+        for (int i = 0; i < list.size(); i++) {
+            userFirebase.setName(list.get(i).getName());
+
+            userViewModel.saveUserRx(userFirebase.getName()).subscribe();
+        }
+
+
+
+
+        Toast.makeText(this, ""+list.toString(), Toast.LENGTH_SHORT).show();
+    }
 }

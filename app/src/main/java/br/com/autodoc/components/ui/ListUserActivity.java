@@ -40,7 +40,7 @@ public class ListUserActivity extends DaggerAppCompatActivity implements Lifecyc
     ViewModelProvider.Factory factory;
 
     @Inject
-    Repository repository;
+    Repository repositoryImpl;
 
     @BindView(R.id.recycler_user) RecyclerView recyclerView;
     private UserHowAdapter userHowAdapter;
@@ -56,10 +56,10 @@ public class ListUserActivity extends DaggerAppCompatActivity implements Lifecyc
 
         listUserViewModel.getUsers().observe(this, new Observer<List<User>>() {
             @Override
-            public void onChanged(@Nullable List<User> users) {
+            public void onChanged(@Nullable List<User> userEntities) {
 
-//                Toast.makeText(ListUserActivity.this, ""+users, Toast.LENGTH_SHORT).show();
-                userHowAdapter = new UserHowAdapter(users);
+//                Toast.makeText(ListUserActivity.this, ""+userEntities, Toast.LENGTH_SHORT).show();
+                userHowAdapter = new UserHowAdapter(userEntities);
                 recyclerView.setAdapter(userHowAdapter);
             }
         });
@@ -77,7 +77,7 @@ public class ListUserActivity extends DaggerAppCompatActivity implements Lifecyc
 //        new Thread(new Runnable() {
 //            @Override
 //            public void run() {
-//                liUser = repository.getAll();
+//                liUser = repositoryImpl.getAll();
 //
 ////                for (int i = 0; i < 10; i++) {
 ////

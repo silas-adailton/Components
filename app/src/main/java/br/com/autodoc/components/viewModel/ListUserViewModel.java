@@ -14,16 +14,16 @@ import br.com.autodoc.components.model.User;
 public class ListUserViewModel extends ViewModel {
 
     private LiveData<List<User>> listUser = new MutableLiveData<>();
-    private final Repository repository;
+    private final Repository repositoryImpl;
 
     @Inject
-    public ListUserViewModel(final Repository repository) {
-        this.repository = repository;
+    public ListUserViewModel(final Repository repositoryImpl) {
+        this.repositoryImpl = repositoryImpl;
 
     }
 
     public LiveData<List<User>> getUsers() {
-        listUser = repository.getAll();
+        listUser = repositoryImpl.getAll();
         return listUser;
     }
 }
