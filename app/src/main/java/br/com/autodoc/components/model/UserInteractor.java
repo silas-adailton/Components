@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import br.com.autodoc.components.data.RepositoryFirebase;
+import br.com.autodoc.components.data.user.RepositoryFirebase;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 
@@ -21,10 +21,10 @@ public class UserInteractor {
 
 
 
-    public Flowable<List<UserFirebase>> listMessage() {
+    public Flowable<List<UserFirebase>> listUser() {
 
         return repositoryFirebase.listUser()
-                .flatMap(list -> Flowable.fromIterable(list))
+                .flatMap(Flowable::fromIterable)
                 .sorted(new Comparator<UserFirebase>() {
                     @Override
                     public int compare(UserFirebase o1, UserFirebase o2) {
@@ -40,6 +40,25 @@ public class UserInteractor {
 
     }
 
+
+    public Observable<List<UserFirebase>> listUserTeste() {
+
+        return repositoryFirebase.listMessage()
+                .flatMap(Observable::fromIterable)
+                .sorted(new Comparator<UserFirebase>() {
+                    @Override
+                    public int compare(UserFirebase o1, UserFirebase o2) {
+                        return o1.getName().compareTo(o2.getName());
+                    }
+                })
+                .map(user -> {
+                    user.setName(user.getName().toUpperCase());
+                    return user;
+                })
+                .filter(user -> user.getName().contains(""))
+                .toList().toObservable();
+
+    }
     public static final class Request {
 
         private UserFirebase userFirebase;

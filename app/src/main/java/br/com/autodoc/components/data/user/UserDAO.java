@@ -1,4 +1,4 @@
-package br.com.autodoc.components.data;
+package br.com.autodoc.components.data.user;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;

@@ -1,4 +1,4 @@
-package br.com.autodoc.components.data;
+package br.com.autodoc.components.data.user;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -148,7 +148,7 @@ public class RepositoryFirebaseImpl implements RepositoryFirebase {
 //                    }
 //                });
 //            }
-        }, BackpressureStrategy.BUFFER);
+        }, BackpressureStrategy.LATEST);
 
     }
 

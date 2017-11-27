@@ -1,34 +1,35 @@
 package br.com.autodoc.components;
 
 
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
 import javax.inject.Inject;
 
-import br.com.autodoc.components.data.Repository;
-import br.com.autodoc.components.data.RepositoryFirebase;
+import br.com.autodoc.components.data.pet.RepositoryPet;
+import br.com.autodoc.components.data.user.Repository;
 import br.com.autodoc.components.viewModel.ListUserViewModel;
-import br.com.autodoc.components.viewModel.UserViewModel;
+import br.com.autodoc.components.viewModel.ViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
    private final Repository repository;
+   private final RepositoryPet repositoryPet;
     @Inject
-    public ViewModelFactory(Repository repository) {
+    public ViewModelFactory(Repository repository, RepositoryPet repositoryPet) {
         this.repository = repository;
+        this.repositoryPet = repositoryPet;
     }
 
     @NonNull
     @Override
-    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+    public <T extends android.arch.lifecycle.ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(ListUserViewModel.class)) {
 
             return (T) new ListUserViewModel(repository);
         }
-        else if (modelClass.isAssignableFrom(UserViewModel.class)) {
-            return (T) new UserViewModel(repository);
+        else if (modelClass.isAssignableFrom(ViewModel.class)) {
+            return (T) new ViewModel(repository, repositoryPet);
         }
         throw new IllegalArgumentException("Unknown class name ");
     }

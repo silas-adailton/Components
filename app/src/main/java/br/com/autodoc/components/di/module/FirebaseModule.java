@@ -3,8 +3,8 @@ package br.com.autodoc.components.di.module;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import br.com.autodoc.components.data.RepositoryFirebase;
-import br.com.autodoc.components.data.RepositoryFirebaseImpl;
+import br.com.autodoc.components.data.user.RepositoryFirebase;
+import br.com.autodoc.components.data.user.RepositoryFirebaseImpl;
 import dagger.Module;
 import dagger.Provides;
 

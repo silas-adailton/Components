@@ -20,7 +20,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import br.com.autodoc.components.R;
-import br.com.autodoc.components.data.Repository;
+import br.com.autodoc.components.data.user.Repository;
 import br.com.autodoc.components.model.User;
 import br.com.autodoc.components.viewModel.ListUserViewModel;
 import butterknife.BindView;
@@ -82,7 +82,7 @@ public class ListUserActivity extends DaggerAppCompatActivity implements Lifecyc
 ////                for (int i = 0; i < 10; i++) {
 ////
 ////                    User user = new User();
-////                    user.setName("Teste "+i);
+////                    user.setNamePet("Teste "+i);
 ////                    liUser.add(user);
 ////                }
 ////

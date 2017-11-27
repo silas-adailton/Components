@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,9 +28,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import br.com.autodoc.components.R;
+import br.com.autodoc.components.model.Pet;
 import br.com.autodoc.components.model.User;
 import br.com.autodoc.components.model.UserFirebase;
-import br.com.autodoc.components.viewModel.UserViewModel;
+import br.com.autodoc.components.viewModel.ViewModel;
 import br.com.autodoc.components.viewModel.ViewModelFirebase;
 import br.com.autodoc.components.viewModel.ViewModelFirebaseContract;
 import butterknife.BindView;
@@ -51,7 +53,7 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
 
     @Inject
     ViewModelProvider.Factory factory;
-    private UserViewModel userViewModel;
+    private ViewModel viewModel;
     private UserHowAdapter userHowAdapter;
 
     @Inject
@@ -63,9 +65,11 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = ViewModelProviders.of(this, factory).get(ViewModel.class);
         getLifecycle().addObserver(MainActivity.this);
 
-        viewModelFirebase.showListMessage();
+//        viewModelFirebase.showListMessage();
+//        viewModelFirebase.showListMessageTeste();
 
     }
 
@@ -124,16 +128,16 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
 
         registerForContextMenu(recyclerViewUser);
 
-        userViewModel = ViewModelProviders.of(this, factory).get(UserViewModel.class);
+//        viewModel = ViewModelProviders.of(this, factory).get(ViewModel.class);
 
-//        userViewModel.getListUser().observe(this, new Observer<List<User>>() {
+//        viewModel.getListUser().observe(this, new Observer<List<User>>() {
 //            @Override
 //            public void onChanged(@Nullable List<User> users) {
 //                userHowAdapter = new UserHowAdapter(users);
 //                recyclerViewUser.setAdapter(userHowAdapter);
 //            }
 //        });
-        userViewModel.getUser().subscribeWith(new DisposableSubscriber<List<User>>() {
+        viewModel.getUser().subscribeWith(new DisposableSubscriber<List<User>>() {
                     @Override
             public void onNext(List<User> userEntities) {
                 userHowAdapter = new UserHowAdapter(userEntities);
@@ -158,10 +162,10 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
     void save() {
         String userName = editName.getText().toString().trim();
 
-//        userViewModel.saveUser(userName);
-//        userViewModel = ViewModelProviders.of(this, factory).get(UserViewModel.class);
+//        viewModel.saveUser(userName);
+//        viewModel = ViewModelProviders.of(this, factory).get(ViewModel.class);
 
-        userViewModel.saveUserRx(userName).doOnTerminate(this::clearEditText)
+        viewModel.saveUserRx(userName).doOnTerminate(this::clearEditText)
                 .subscribe();
         Toast.makeText(this, userName, Toast.LENGTH_SHORT).show();
     }
@@ -215,7 +219,7 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
     }
 
     private void delete(int id) {
-        userViewModel.deleteUser(id).subscribe();
+        viewModel.deleteUser(id).subscribe();
 
     }
 
@@ -223,16 +227,66 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
     public void showUserFirebase(List<UserFirebase> list) {
 
         UserFirebase userFirebase = new UserFirebase();
-
-        for (int i = 0; i < list.size(); i++) {
-            userFirebase.setName(list.get(i).getName());
-
-            userViewModel.saveUserRx(userFirebase.getName()).subscribe();
+        for (UserFirebase u: list) {
+            viewModel.saveUserRx(u.getName()).subscribe();
         }
 
+//        for (int i = 0; i < list.size(); i++) {
+//            userFirebase.setNamePet(list.get(i).getNamePet());
+//
+//        }
 
+
+        Log.d("TESTE", "showUserFirebase: "+list.toString());
 
 
         Toast.makeText(this, ""+list.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    public void insertPets() {
+
+        Pet pet = new Pet();
+//
+//        pet.setUser(1);
+//        pet.setNamePet("Pop");
+//        pet.setRaca("Vira lata");
+//
+//        Pet pet2 = new Pet();
+//
+//        pet2.setUserId(2);
+//        pet2.setNamePet("Lion");
+//        pet2.setRaca("Rottweiler");
+
+//        viewModel.savePetRx(pet2).subscribe();
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    public void showPets() {
+        viewModel.getPet().subscribeWith(new DisposableSubscriber<List<Pet>>() {
+            @Override
+            public void onNext(List<Pet> pets) {
+                Log.d("TESTE", "onNext: "+ pets);
+                Toast.makeText(MainActivity.this, "PETS: "+pets.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    public void deletePets() {
+        Pet pet = new Pet();
+
+        pet.setIdPet(1);
+
+        viewModel.deletePets(pet);
     }
 }

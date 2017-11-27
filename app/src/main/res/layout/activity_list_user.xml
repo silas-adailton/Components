@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/layout_list"
+    android:idPet="@+idPet/layout_list"
     tools:context="br.com.autodoc.components.ui.ListUserActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_user"
+        android:idPet="@+idPet/recycler_user"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"

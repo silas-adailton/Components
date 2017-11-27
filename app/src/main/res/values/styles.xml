@@ -1,24 +1,24 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style namePet="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/accent</item>
+        <item namePet="colorPrimary">@color/primary</item>
+        <item namePet="colorPrimaryDark">@color/primary_dark</item>
+        <item namePet="colorAccent">@color/accent</item>
 
-        <item name="windowActionModeOverlay">true</item>
+        <item namePet="windowActionModeOverlay">true</item>
         <!--  For Custom Action Mode Background Color/Drawable -->
-        <item name="actionModeBackground">@color/primary</item>
+        <item namePet="actionModeBackground">@color/primary</item>
     </style>
 
-    <style name="Button" parent="AppTheme">
-        <item name="colorControlHighlight">@color/primary_dark</item>
-        <item name="colorButtonNormal">@color/primary</item>
-        <item name="android:textColorPrimary">@color/text</item>
-        <item name="android:layout_margin">@dimen/xs</item>
-        <item name="android:minHeight">@dimen/lg</item>
-        <item name="android:textSize">@dimen/sm</item>
+    <style namePet="Button" parent="AppTheme">
+        <item namePet="colorControlHighlight">@color/primary_dark</item>
+        <item namePet="colorButtonNormal">@color/primary</item>
+        <item namePet="android:textColorPrimary">@color/text</item>
+        <item namePet="android:layout_margin">@dimen/xs</item>
+        <item namePet="android:minHeight">@dimen/lg</item>
+        <item namePet="android:textSize">@dimen/sm</item>
     </style>
 
 </resources>

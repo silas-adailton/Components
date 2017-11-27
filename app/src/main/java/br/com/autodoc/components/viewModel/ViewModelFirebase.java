@@ -1,8 +1,6 @@
 package br.com.autodoc.components.viewModel;
 
 
-import android.util.Log;
-
 import org.reactivestreams.Subscription;
 
 import java.util.List;
@@ -12,7 +10,7 @@ import javax.inject.Inject;
 import br.com.autodoc.components.model.UserFirebase;
 import br.com.autodoc.components.model.UserInteractor;
 import io.reactivex.FlowableSubscriber;
-import io.reactivex.observers.DisposableObserver;
+import io.reactivex.functions.Consumer;
 
 public class ViewModelFirebase {
 
@@ -27,7 +25,17 @@ public class ViewModelFirebase {
 
     public void showListMessage() {
 
-        userInteractor.listMessage().subscribe(new FlowableSubscriber<List<UserFirebase>>() {
+        userInteractor.listUser().subscribe(new Consumer<List<UserFirebase>>() {
+            @Override
+            public void accept(List<UserFirebase> list) throws Exception {
+                view.showUserFirebase(list);
+            }
+        });
+    }
+
+    public void showListMessageTeste() {
+
+        userInteractor.listUser().subscribe(new FlowableSubscriber<List<UserFirebase>>() {
             @Override
             public void onSubscribe(Subscription s) {
 
@@ -48,5 +56,12 @@ public class ViewModelFirebase {
 
             }
         });
+
+//        userInteractor.listUserTeste().subscribe(new Consumer<List<UserFirebase>>() {
+//            @Override
+//            public void accept(List<UserFirebase> list) throws Exception {
+//                view.showUserFirebase(list);
+//            }
+//        });
     }
 }

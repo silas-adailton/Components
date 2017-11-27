@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import br.com.autodoc.components.data.Repository;
+import br.com.autodoc.components.data.user.Repository;
 import br.com.autodoc.components.model.User;
 
 public class ListUserViewModel extends ViewModel {

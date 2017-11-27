@@ -1,11 +1,12 @@
 package br.com.autodoc.components.viewModel;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
 
 import java.util.List;
 
-import br.com.autodoc.components.data.Repository;
+import br.com.autodoc.components.data.pet.RepositoryPet;
+import br.com.autodoc.components.data.user.Repository;
+import br.com.autodoc.components.model.Pet;
 import br.com.autodoc.components.model.User;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
@@ -15,12 +16,14 @@ import io.reactivex.internal.operators.completable.CompletableFromAction;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class UserViewModel extends ViewModel {
+public class ViewModel extends android.arch.lifecycle.ViewModel {
     private Repository repository;
+    private RepositoryPet repositoryPet;
     private User user = new User();
 
-    public UserViewModel(Repository repository) {
+    public ViewModel(Repository repository, RepositoryPet repositoryPet) {
         this.repository = repository;
+        this.repositoryPet = repositoryPet;
     }
 
     public void saveUser(String userName) {
@@ -71,5 +74,33 @@ public class UserViewModel extends ViewModel {
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
 
+    }
+
+    public Completable savePetRx(Pet pet) {
+
+        return new CompletableFromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+
+                repositoryPet.insertPet(pet);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+    }
+
+    public Flowable<List<Pet>> getPet() {
+        return repositoryPet.getAllPet()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Completable deletePets(Pet pet) {
+
+        return new CompletableFromAction(() -> {
+
+            repositoryPet.delete(pet);
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }
