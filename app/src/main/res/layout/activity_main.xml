@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:idPet="@+idPet/layout_main"
+    android:id="@+id/layout_main"
     android:focusable="true"
     android:focusableInTouchMode="true"
     tools:context="br.com.autodoc.components.ui.MainActivity">
 
     <android.support.v7.widget.Toolbar
-        android:idPet="@+idPet/main_toolbar"
+        android:id="@+id/main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
@@ -19,8 +19,8 @@
         />
 
     <EditText
-        android:labelFor="@idPet/editText_name"
-        android:idPet="@+idPet/editText_name"
+        android:labelFor="@id/editText_name"
+        android:id="@+id/editText_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -32,13 +32,13 @@
          />
 
     <Button
-        android:idPet="@+idPet/button_save"
+        android:id="@+id/button_save"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/save"
-        android:layout_below="@+idPet/editText_name"
+        android:layout_below="@+id/editText_name"
         android:theme="@style/Button"
         android:layout_alignParentEnd="true"
         style="@style/Button"
@@ -46,14 +46,14 @@
         />
 
     <android.support.v7.widget.RecyclerView
-        android:idPet="@+idPet/recycler_user"
+        android:id="@+id/recycler_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:layout_below="@+idPet/button_save"
+        android:layout_below="@+id/button_save"
         />
 
 </RelativeLayout>

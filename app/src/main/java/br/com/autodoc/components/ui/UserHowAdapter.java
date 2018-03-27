@@ -7,9 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,7 +19,7 @@ import butterknife.ButterKnife;
 
 public class UserHowAdapter extends RecyclerView.Adapter<UserHowAdapter.ViewHolder> {
     private List<User> list;
-    private UserOnclickListener userOnclickListener;
+    private ClickCallback clickCallback;
 
     @Inject
     User user;
@@ -30,8 +28,8 @@ public class UserHowAdapter extends RecyclerView.Adapter<UserHowAdapter.ViewHold
         this.list = list;
     }
 
-    public void setUserOnclickListener(UserOnclickListener userOnclickListener) {
-        this.userOnclickListener = userOnclickListener;
+    public void setClickCallback(ClickCallback clickCallback) {
+        this.clickCallback = clickCallback;
     }
 
     @Override
@@ -43,53 +41,23 @@ public class UserHowAdapter extends RecyclerView.Adapter<UserHowAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        user = list.get(position);
+        user = list.get(holder.getAdapterPosition());
+        User user = list.get(holder.getAdapterPosition());
         holder.textViewUser.setText(user.getName());
         holder.textViewUser.setTag(user.getId());
 
-        int id = (int) holder.textViewUser.getTag();
-
-        if (userOnclickListener != null) {
+        if (clickCallback != null) {
             holder.itemView.setOnClickListener(view -> {
-                user.setSelected(false);
-                int corFundo = holder.itemView.getContext().getResources().getColor(R.color.text);
-//                            holder.itemView.getContext().getResources().getColor(
-//                            user.isSelected() ? R.color.primary : R.color.text);
-
-                holder.textViewUser.setBackgroundColor(corFundo);
-                userOnclickListener.onClickUser(view, list, id);
+                holder.textViewUser.setBackgroundColor(holder.itemView.getContext().getResources().getColor(R.color.colorTeste));
             });
         }
 
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                user.setSelected(true);
-                Toast.makeText(holder.itemView.getContext(), "Click longo", Toast.LENGTH_SHORT).show();
-//                holder.checkBoxDeleteUser.setVisibility(View.VISIBLE);
-//                holder.checkBoxDeleteUser.setChecked(true);
+        holder.itemView.setOnLongClickListener(view -> {
+            clickCallback.clickCalback(user);
 
-                List<User> userSelected = new ArrayList<>();
+                holder.textViewUser.setBackgroundColor(holder.itemView.getResources().getColor(R.color.primary));
 
-                for (int i =0; i< list.size(); i++){
-                    if (user.isSelected()) {
-                        userSelected.add(user);
-                    }
-                }
-
-                userOnclickListener.onClickUserListener(holder.itemView, userSelected, id);
-
-                if (user.isSelected()) {
-                    int corFundo =  holder.itemView.getContext().getResources().getColor(
-                            user.isSelected() ? R.color.primary : R.color.text);
-                            //holder.itemView.getContext().getResources().getColor(R.color.separator);
-//
-
-                    holder.textViewUser.setBackgroundColor(corFundo);
-                }
-
-                return true;
-            }
+            return true;
         });
     }
 
@@ -98,9 +66,8 @@ public class UserHowAdapter extends RecyclerView.Adapter<UserHowAdapter.ViewHold
         return list.size();
     }
 
-    interface UserOnclickListener {
-        void onClickUserListener(View view, List<User>list, int id);
-        void onClickUser(View view, List<User>list, int id);
+    interface ClickCallback {
+        void clickCalback(User user);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

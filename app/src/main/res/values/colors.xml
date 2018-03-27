@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color namePet="colorPrimary">#3F51B5</color>
-    <color namePet="colorPrimaryDark">#303F9F</color>
-    <color namePet="colorAccent">#FF4081</color>
-    <color namePet="primary">#2196F3</color>
-    <color namePet="primary_dark">#1976D2</color>
-    <color namePet="primary_light">#BBDEFB</color>
-    <color namePet="accent">#03A9F4</color>
-    <color namePet="primary_text">#484848</color>
-    <color namePet="secondary_text">#757575</color>
-    <color namePet="separator">#DCDCDC</color>
-    <color namePet="text">#FFFFFF</color>
-    <color namePet="icons">#FFFFFF</color>
-    <color namePet="text_red">#F44336</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="primary">#2196F3</color>
+    <color name="primary_dark">#1976D2</color>
+    <color name="primary_light">#BBDEFB</color>
+    <color name="accent">#03A9F4</color>
+    <color name="primary_text">#484848</color>
+    <color name="secondary_text">#757575</color>
+    <color name="separator">#DCDCDC</color>
+    <color name="text">#FFFFFF</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="text_red">#F44336</color>
+    <color name="colorTeste">#FAFAFA</color>
 </resources>

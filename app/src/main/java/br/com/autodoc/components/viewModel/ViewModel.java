@@ -10,6 +10,7 @@ import br.com.autodoc.components.model.Pet;
 import br.com.autodoc.components.model.User;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
 import io.reactivex.internal.operators.completable.CompletableFromAction;
@@ -74,6 +75,17 @@ public class ViewModel extends android.arch.lifecycle.ViewModel {
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
 
+    }
+
+    public Completable deleteUser(List<User> userList) {
+
+        return new CompletableFromAction(() -> {
+            for (User user : userList) {
+                repository.delete(user);
+            }
+
+        }).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public Completable savePetRx(Pet pet) {

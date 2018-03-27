@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -40,7 +41,7 @@ import butterknife.OnClick;
 import dagger.android.support.DaggerAppCompatActivity;
 import io.reactivex.subscribers.DisposableSubscriber;
 
-public class MainActivity extends DaggerAppCompatActivity implements LifecycleObserver, UserHowAdapter.UserOnclickListener, ViewModelFirebaseContract.View {
+public class MainActivity extends DaggerAppCompatActivity implements LifecycleObserver, UserHowAdapter.ClickCallback, ViewModelFirebaseContract.View {
 
     @BindView(R.id.editText_name)
     EditText editName;
@@ -55,6 +56,7 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
     ViewModelProvider.Factory factory;
     private ViewModel viewModel;
     private UserHowAdapter userHowAdapter;
+    private List<User> userList = new ArrayList<>();
 
     @Inject
     User user;
@@ -137,12 +139,12 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
 //                recyclerViewUser.setAdapter(userHowAdapter);
 //            }
 //        });
-        viewModel.getUser().subscribeWith(new DisposableSubscriber<List<User>>() {
+        viewModel.getUser().subscribe(new DisposableSubscriber<List<User>>() {
                     @Override
             public void onNext(List<User> userEntities) {
                 userHowAdapter = new UserHowAdapter(userEntities);
                 recyclerViewUser.setAdapter(userHowAdapter);
-                userHowAdapter.setUserOnclickListener(MainActivity.this);
+                userHowAdapter.setClickCallback(MainActivity.this);
             }
 
             @Override
@@ -175,13 +177,8 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
     }
 
     @Override
-    public void onClickUserListener(View view, List<User> list, int id) {
-//        delete(id);
-
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).isSelected()) {
-            }
-        }
+    public void clickCalback(User user) {
+        userList.add(user);
 
         ActionMode.Callback callback = new ActionMode.Callback() {
             @Override
@@ -198,7 +195,7 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
 
             @Override
             public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-                delete(id);
+                deleteUserList(userList);
                 actionMode.finish();
                 return true;
             }
@@ -209,17 +206,10 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
             }
         };
         recyclerViewUser.startActionMode(callback);
-
-
     }
 
-    @Override
-    public void onClickUser(View view, List<User> list, int id) {
-//        findViewById(R.id.textView).setBackgroundColor(getResources().getColor(R.color.text));
-    }
-
-    private void delete(int id) {
-        viewModel.deleteUser(id).subscribe();
+    private void deleteUserList(List<User> userList) {
+        viewModel.deleteUser(userList).subscribe();
 
     }
 
@@ -263,7 +253,7 @@ public class MainActivity extends DaggerAppCompatActivity implements LifecycleOb
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     public void showPets() {
-        viewModel.getPet().subscribeWith(new DisposableSubscriber<List<Pet>>() {
+        viewModel.getPet().subscribe(new DisposableSubscriber<List<Pet>>() {
             @Override
             public void onNext(List<Pet> pets) {
                 Log.d("TESTE", "onNext: "+ pets);

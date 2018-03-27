@@ -54,14 +54,11 @@ public class ListUserActivity extends DaggerAppCompatActivity implements Lifecyc
         initializeRecyclerView();
         listUserViewModel = ViewModelProviders.of(this, factory).get(ListUserViewModel.class);
 
-        listUserViewModel.getUsers().observe(this, new Observer<List<User>>() {
-            @Override
-            public void onChanged(@Nullable List<User> userEntities) {
+        listUserViewModel.getUsers().observe(this, userEntities -> {
 
 //                Toast.makeText(ListUserActivity.this, ""+userEntities, Toast.LENGTH_SHORT).show();
-                userHowAdapter = new UserHowAdapter(userEntities);
-                recyclerView.setAdapter(userHowAdapter);
-            }
+            userHowAdapter = new UserHowAdapter(userEntities);
+            recyclerView.setAdapter(userHowAdapter);
         });
 
 

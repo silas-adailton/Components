@@ -40,13 +40,13 @@ dependencies {
     //Architecure Components
 
     //Lifecycles
-    implementation "android.arch.lifecycle:runtime:1.0.3"
+    implementation "android.arch.lifecycle:runtime:1.1.1"
     //Lifecycles Java8
-    implementation "android.arch.lifecycle:common-java8:1.0.0"
+    implementation "android.arch.lifecycle:common-java8:1.1.1"
 
     //LiveData e ViewModel
-    implementation "android.arch.lifecycle:extensions:1.0.0"
-    testImplementation "android.arch.core:core-testing:1.0.0"
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    testImplementation "android.arch.core:core-testing:1.1.1"
 
     //Romm
     implementation "android.arch.persistence.room:runtime:1.0.0"
@@ -57,21 +57,21 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:26.1.0'
 
     //RxJava
-    compile 'io.reactivex.rxjava2:rxjava:2.1.5'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.5'
     //RxAndroid
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
-    compile 'com.jakewharton:butterknife:8.8.1'
+    implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
-    compile "com.google.dagger:dagger:2.11"
-    compile "com.google.dagger:dagger-android:2.11"
-    compile "com.google.dagger:dagger-android-support:2.11"
-    annotationProcessor "com.google.dagger:dagger-compiler:2.11"
-    annotationProcessor "com.google.dagger:dagger-android-processor:2.11"
+    implementation "com.google.dagger:dagger:2.13"
+    implementation "com.google.dagger:dagger-android:2.13"
+    implementation "com.google.dagger:dagger-android-support:2.13"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.13"
+    annotationProcessor "com.google.dagger:dagger-android-processor:2.13"
 
-    debugCompile 'com.amitshekhar.android:debug-db:1.0.1'
-    compile 'com.google.firebase:firebase-core:11.6.0'
-    compile 'com.google.firebase:firebase-database:11.6.0'
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.3'
+    implementation 'com.google.firebase:firebase-core:12.0.0'
+    implementation 'com.google.firebase:firebase-database:12.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

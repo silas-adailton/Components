@@ -1,7 +1,6 @@
 package br.com.autodoc.components.model;
 
 
-import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,12 +24,7 @@ public class UserInteractor {
 
         return repositoryFirebase.listUser()
                 .flatMap(Flowable::fromIterable)
-                .sorted(new Comparator<UserFirebase>() {
-                    @Override
-                    public int compare(UserFirebase o1, UserFirebase o2) {
-                        return o1.getName().compareTo(o2.getName());
-                    }
-                })
+                .sorted((o1, o2) -> o1.getName().compareTo(o2.getName()))
                 .map(user -> {
                     user.setName(user.getName().toUpperCase());
                     return user;
@@ -45,12 +39,7 @@ public class UserInteractor {
 
         return repositoryFirebase.listMessage()
                 .flatMap(Observable::fromIterable)
-                .sorted(new Comparator<UserFirebase>() {
-                    @Override
-                    public int compare(UserFirebase o1, UserFirebase o2) {
-                        return o1.getName().compareTo(o2.getName());
-                    }
-                })
+                .sorted((o1, o2) -> o1.getName().compareTo(o2.getName()))
                 .map(user -> {
                     user.setName(user.getName().toUpperCase());
                     return user;
